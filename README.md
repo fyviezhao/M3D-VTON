@@ -19,7 +19,7 @@ python util/data_preprocessing.py --MPV3D_root path/to/MPV3D/dataset
 
 If you want to process your own data, some more steps are needed (the &#8594; indicates the corresponding folder where the images should be put into):
 
-1. prepare an in-shop clothing image *C* (&#8594; `mpv3d_example/cloth`) and a frontal person image *P* (&#8594; `mpv3d_example/image`);
+1. prepare an in-shop clothing image *C* (&#8594; `mpv3d_example/cloth`) and a frontal person image *P* (&#8594; `mpv3d_example/image`) with resolution of 320*512;
 
 2. obtain the mask of *C* (&#8594; `mpv3d_example/cloth-mask`) by thresholding or using [remove.bg](https://www.remove.bg/);
 
