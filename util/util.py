@@ -73,9 +73,8 @@ def normalize(array):  # array is torch tensor
 
 # set gloabal tensor to init X,Y only for the first time
 flag_XY = True
-X = torch.zeros([0]).cuda()
-Y = torch.zeros([0]).cuda()
-
+X = torch.zeros([0])
+Y = torch.zeros([0])
 def depth2normal_ortho(depth):
     """convert orthographic depth map to normal map (refer to [NormalGAN]).
     Parameters:
@@ -91,8 +90,8 @@ def depth2normal_ortho(depth):
 
     if flag_XY:
         Y, X = torch.meshgrid(torch.tensor(range(H)), torch.tensor(range(W)))
-        X = X.unsqueeze(0).repeat(B, 1, 1).float().cuda()  # (B,H,W)
-        Y = Y.unsqueeze(0).repeat(B, 1, 1).float().cuda()
+        X = X.unsqueeze(0).repeat(B, 1, 1).float().to(depth.device)  # (B,H,W)
+        Y = Y.unsqueeze(0).repeat(B, 1, 1).float().to(depth.device)
         flag_XY = False
     
     x_cord = (X + 95) / 256 - 1 # specific to MPV3D

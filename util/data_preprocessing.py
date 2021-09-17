@@ -94,27 +94,27 @@ if __name__ == '__main__':
     opt, _ = parser.parse_known_args()
 
     MPV3D_root = opt.MPV3D_root
+
+    # source dirs
     person_root = os.path.join(MPV3D_root, 'image')
     pose_root = os.path.join(MPV3D_root, 'pose')
     cloth_root= os.path.join(MPV3D_root, 'cloth')
     cloth_mask_root = os.path.join(MPV3D_root, 'cloth-mask')
     parse_root = os.path.join(MPV3D_root, 'image-parse')
 
+    # target dirs
     palmrgb_dst = os.path.join(MPV3D_root, 'palm-rgb')
     palmmask_dst = os.path.join(MPV3D_root, 'palm-mask')
+    gradient_dst = os.path.join(MPV3D_root, 'image-sobel')
     os.makedirs(palmrgb_dst, exist_ok=True)
     os.makedirs(palmmask_dst, exist_ok=True)
-
-    gradient_dst = os.path.join(MPV3D_root, 'image-sobel')
     os.makedirs(gradient_dst, exist_ok=True)
-
-    inpaint_dst = os.path.join(MPV3D_root, 'image-inpainted')
-    os.makedirs(inpaint_dst, exist_ok=True)
 
 
     # -------------------- Pre-Alignment ------------------------ #
     data_modes = ['train_pairs','test_pairs']
     for data_mode in data_modes:
+        # target dirs
         cloth_align_dst = os.path.join(MPV3D_root, 'aligned', data_mode, 'cloth')
         clothmask_align_dst = os.path.join(MPV3D_root, 'aligned', data_mode, 'cloth-mask')
         os.makedirs(cloth_align_dst, exist_ok=True)
