@@ -11,6 +11,8 @@ import os
 import time
 import numpy as np
 import cv2
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from options.test_options import TestOptions
 from data import create_dataset
@@ -132,4 +134,4 @@ if __name__ == '__main__':
                 bnormal_vis = (bnormal_vis * 255).astype(np.uint8)
                 bnormal_pil = Image.fromarray(bnormal_vis)
                 bnormal_pil.save(os.path.join(results_dir, 'final-normal-vis', im_name.replace('front.png','back_normal.png')))
-    print(f'\nTest {opt.model} down.')
+    print(f'\nTesting {opt.model} finished.')

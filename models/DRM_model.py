@@ -139,16 +139,17 @@ class DRMModel(BaseModel):
             self.imhal_sobely = input['imhal_sobely'].to(self.device) # for input
             self.c_sobelx = input['cloth_sobelx'].to(self.device)     # for input
             self.c_sobely = input['cloth_sobely'].to(self.device)     # for input
-        self.imfd = input['person_fdepth'].to(self.device)          # for ground truth
-        self.imbd = input['person_bdepth'].to(self.device)          # for ground truth
-        if self.use_grad_loss:
-            self.fgrad = self.compute_grad(self.imfd) # for ground truth
-            self.bgrad = self.compute_grad(self.imbd) # for ground truth
+        if self.isTrain:
+            self.imfd = input['person_fdepth'].to(self.device)          # for ground truth
+            self.imbd = input['person_bdepth'].to(self.device)          # for ground truth
+            if self.use_grad_loss:
+                self.fgrad = self.compute_grad(self.imfd) # for ground truth
+                self.bgrad = self.compute_grad(self.imbd) # for ground truth
 
-        if self.use_normal_loss or self.use_gan_loss:
-            self.im_mask = input['person_mask'].to(self.device) # for input
-            self.imfn = util.depth2normal_ortho(self.imfd).to(self.device) # for ground truth
-            self.imbn = util.depth2normal_ortho(self.imbd).to(self.device) # for ground truth
+            if self.use_normal_loss or self.use_gan_loss:
+                self.im_mask = input['person_mask'].to(self.device) # for input
+                self.imfn = util.depth2normal_ortho(self.imfd).to(self.device) # for ground truth
+                self.imbn = util.depth2normal_ortho(self.imbd).to(self.device) # for ground truth
 
     def forward(self):
         """Run forward pass. This will be called by both functions <optimize_parameters> and <test>."""

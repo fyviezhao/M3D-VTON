@@ -131,16 +131,19 @@ class MTMModel(BaseModel):
         self.c_name = input['c_name']                                # meta info                    
         self.agnostic = input['agnostic'].to(self.device)            # for input
         self.c = input['cloth'].to(self.device)                      # for input
-        self.im_c =  input['parse_cloth'].to(self.device)            # for ground truth
-        self.fdepth_gt = input['person_fdepth'].to(self.device)      # for ground truth
-        self.bdepth_gt = input['person_bdepth'].to(self.device)      # for ground truth
-        self.segmt_gt = input['person_parse'].long().to(self.device) # for ground truth
         self.cm = input['cloth_mask'].to(self.device)                # for visual
         self.im = input['person'].to(self.device)                    # for visual
         self.im_shape = input['person_shape']                        # for visual
         self.im_hhl = input['head_hand_lower']                       # for visual
         self.pose = input['pose']                                    # for visual
         self.im_g = input['grid_image'].to(self.device)              # for visual
+        self.im_c =  input['parse_cloth'].to(self.device)            # for ground truth
+        self.segmt_gt = input['person_parse'].long().to(self.device) # for ground truth
+        if self.isTrain:
+            self.fdepth_gt = input['person_fdepth'].to(self.device)      # for ground truth
+            self.bdepth_gt = input['person_bdepth'].to(self.device)      # for ground truth
+        
+        
         
 
     def forward(self):
@@ -159,8 +162,9 @@ class MTMModel(BaseModel):
             self.fdepth_pred, self.bdepth_pred = torch.split(self.output['depth'], [1,1], 1)
             self.fdepth_pred = torch.tanh(self.fdepth_pred)
             self.bdepth_pred = torch.tanh(self.bdepth_pred)
-            self.fdepth_diff = self.fdepth_pred - self.fdepth_gt # just for visual
-            self.bdepth_diff = self.bdepth_pred - self.bdepth_gt # fust for visual
+            if self.isTrain:
+                self.fdepth_diff = self.fdepth_pred - self.fdepth_gt # just for visual
+                self.bdepth_diff = self.bdepth_pred - self.bdepth_gt # fust for visual
         
         if self.output['segmt'] is not None:
             self.segmt_pred = self.output['segmt']
