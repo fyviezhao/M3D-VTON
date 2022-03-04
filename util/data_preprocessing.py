@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
 
     # -------------------- Segment Palms ------------------------ #
-    person_list = sorted(os.listdir(person_root))
+    person_list = sorted([i for _,_,i in os.walk(person_root)][0])
     for person_name in tqdm(person_list):
         person_id = person_name.split('_')[0]
         person_path = os.path.join(person_root, person_name)
@@ -231,7 +231,7 @@ if __name__ == '__main__':
 
 
     # -------------------- Person Image Gradient ------------------------ #
-    person_list = sorted(os.listdir(person_root))
+    person_list = sorted([i for _,_,i in os.walk(person_root)][0])
     for person_name in tqdm(person_list):
         person_path = os.path.join(person_root, person_name)
         person = cv2.imread(person_path,0)
