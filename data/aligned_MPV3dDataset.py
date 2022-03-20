@@ -175,36 +175,31 @@ class AlignedMPV3dDataset(BaseDataset):
             imhal_sobelx, imhal_sobely = '', ''
 
         # im depth (front)
-        if self.model == 'MTM' and self.isTrain:
+        imfd = ''
+        imfd_initial = ''
+        if self.model == 'DRM' or self.model == 'TFM':
+            imfd_initial = np.load(os.path.join(self.warproot, 'initial-depth', im_name.replace('whole_front.png', 'initial_front_depth.npy')))
+            imfd_initial = torch.from_numpy(imfd_initial).unsqueeze(0)
+        if self.isTrain:
             imfd = np.load(os.path.join(self.dataroot, 'depth', im_name.replace('.png', '_depth.npy')))
             imfd_m = (imfd > 0).astype(np.float32)
             imfd = -1 * (2 * imfd -1) # viewport -> ndc -> world
             imfd = imfd * imfd_m
             imfd = torch.from_numpy(imfd).unsqueeze(0)
-        elif self.model == 'DRM' or self.model == 'TFM':
-            imfd = ''
-            imfd_initial = np.load(os.path.join(self.warproot, 'initial-depth', im_name.replace('whole_front.png', 'initial_front_depth.npy')))
-            imfd_initial = torch.from_numpy(imfd_initial).unsqueeze(0)
-        else:
-            imfd = ''
-            imfd_initial = ''
-
 
         # im depth (back)
-        if self.model == 'MTM' and self.isTrain:
+        imbd = ''
+        imbd_initial = ''
+        if self.model == 'DRM':
+            imbd_initial = np.load(os.path.join(self.warproot, 'initial-depth', im_name.replace('whole_front.png', 'initial_back_depth.npy')))
+            imbd_initial = torch.from_numpy(imbd_initial).unsqueeze(0)
+        if self.isTrain:
             imbd = np.load(os.path.join(self.dataroot, 'depth', im_name.replace('front.png', 'back_depth.npy')))
             imbd = np.flip(imbd, axis = 1) # align with imfd
             imbd_m = (imbd > 0).astype(np.float32)
             imbd = 2 * imbd -1 # viewport -> ndc -> world
             imbd = imbd * imbd_m
             imbd = torch.from_numpy(imbd).unsqueeze(0)
-        elif self.model == 'DRM':
-            imbd = ''
-            imbd_initial = np.load(os.path.join(self.warproot, 'initial-depth', im_name.replace('whole_front.png', 'initial_back_depth.npy')))
-            imbd_initial = torch.from_numpy(imbd_initial).unsqueeze(0)
-        else:
-            imbd = ''
-            imbd_initial = ''
 
         # load pose points
         if self.model == 'MTM':

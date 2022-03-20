@@ -2,7 +2,7 @@
 
 You can specify '--model MTM' to use this model.
 It implement the following functions:
-    <modify_commandline_options>:　Add model-specific options and rewrite default values for existing options.
+    <modify_commandline_options>: Add model-specific options and rewrite default values for existing options.
     <__init__>: Initialize this model class.
     <set_input>: Unpack input data and perform data pre-processing.
     <forward>: Run forward pass. This will be called by both <optimize_parameters> and <test>.
